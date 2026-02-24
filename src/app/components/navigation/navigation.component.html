@@ -1,0 +1,78 @@
+<nav class="bg-white text-navy shadow-lg sticky top-0 z-50">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <a routerLink="/" class="flex items-center">
+          <img src="assets/logo.png" alt="Box Express Logo" class="h-12 md:h-16 object-contain" />
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-6">
+        <a routerLink="/" routerLinkActive="text-cyan" [routerLinkActiveOptions]="{exact: true}" 
+           class="hover:text-cyan transition-colors duration-200 font-medium text-navy">
+          Inicio
+        </a>
+        <a routerLink="/servicios" routerLinkActive="text-cyan" 
+           class="hover:text-cyan transition-colors duration-200 font-medium text-navy">
+          Servicios
+        </a>
+        <a routerLink="/cotizar" routerLinkActive="text-cyan" 
+           class="hover:text-cyan transition-colors duration-200 font-medium text-navy">
+          Cotizar
+        </a>
+        <a routerLink="/viajes" routerLinkActive="text-cyan" 
+           class="hover:text-cyan transition-colors duration-200 font-medium text-navy">
+          Viajes
+        </a>
+        <a routerLink="/registro" routerLinkActive="text-cyan" 
+           class="hover:text-cyan transition-colors duration-200 font-medium text-navy">
+          Registro
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button (click)="toggleMenu()" class="md:hidden text-navy hover:text-cyan transition-colors">
+        @if (isMenuOpen) {
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        } @else {
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        }
+      </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    @if (isMenuOpen) {
+      <div class="md:hidden pb-4 space-y-2">
+        <a routerLink="/" (click)="closeMenu()" 
+           class="block px-4 py-2 hover:bg-navy-light hover:text-navy rounded transition-colors text-navy">
+          Inicio
+        </a>
+        <a routerLink="/servicios" (click)="closeMenu()" 
+           class="block px-4 py-2 hover:bg-navy-light hover:text-navy rounded transition-colors text-navy">
+          Servicios
+        </a>
+        <a routerLink="/cotizar" (click)="closeMenu()" 
+           class="block px-4 py-2 hover:bg-navy-light hover:text-navy rounded transition-colors text-navy">
+          Cotizar
+        </a>
+        <a routerLink="/viajes" (click)="closeMenu()" 
+           class="block px-4 py-2 hover:bg-navy-light hover:text-navy rounded transition-colors text-navy">
+          Viajes
+        </a>
+        <a routerLink="/registro" (click)="closeMenu()" 
+           class="block px-4 py-2 hover:bg-navy-light hover:text-navy rounded transition-colors text-navy">
+          Registro
+        </a>
+      </div>
+    }
+  </div>
+</nav>

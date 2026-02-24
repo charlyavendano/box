@@ -1,0 +1,118 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-4">Cotizaciones</h1>
+      <p class="text-xl text-gray-600">Calcula el costo de tu encomienda</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <!-- Form Section -->
+      <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+        <h2 class="text-2xl font-bold text-navy mb-6 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-cyan">
+            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+            <line x1="8" y1="6" x2="16" y2="6"></line>
+            <line x1="8" y1="10" x2="16" y2="10"></line>
+            <line x1="8" y1="14" x2="16" y2="14"></line>
+            <line x1="8" y1="18" x2="16" y2="18"></line>
+          </svg>
+          Información del Paquete
+        </h2>
+        <form [formGroup]="quoteForm" class="space-y-6">
+          <!-- Category -->
+          <div>
+            <label class="block text-gray-700 font-medium mb-2">Categoría</label>
+            <select 
+              formControlName="category"
+              (change)="updateCalculations()"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan focus:border-transparent"
+            >
+              <option value="0">Ropa</option>
+              <option value="0">Electrónicos</option>
+              <option value="0">Zapatos</option>
+              <option value="0">Juguetes</option>
+              <option value="0">Varios</option>
+            </select>
+          </div>
+
+          <!-- Package Value -->
+          <div>
+            <label class="block text-gray-700 font-medium mb-2 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-cyan">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              Valor del Paquete ($)
+            </label>
+            <input 
+              type="number" 
+              formControlName="value"
+              (input)="updateCalculations()"
+              min="0"
+              step="0.01"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan focus:border-transparent"
+              placeholder="0.00"
+            />
+          </div>
+
+          <!-- Weight -->
+          <div>
+            <label class="block text-gray-700 font-medium mb-2 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-cyan">
+                <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+              Peso (Libras)
+            </label>
+            <input 
+              type="number" 
+              formControlName="weight"
+              (input)="updateCalculations()"
+              min="0"
+              step="0.1"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan focus:border-transparent"
+              placeholder="0.0"
+            />
+          </div>
+        </form>
+      </div>
+
+      <!-- Invoice Preview -->
+      <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+        <h2 class="text-2xl font-bold text-navy mb-6">Resumen de Cotización</h2>
+        <div class="space-y-4">
+          <div class="border-b border-gray-200 pb-4">
+            <div class="flex justify-between mb-2">
+              <span class="text-gray-600">Valor del Paquete:</span>
+              <span class="font-medium">${{ formattedValue }}</span>
+            </div>
+            <div class="flex justify-between mb-2">
+              <span class="text-gray-600">Categoría (0%):</span>
+              <span class="font-medium">$0.00</span>
+            </div>
+            <div class="flex justify-between mb-2">
+              <span class="text-gray-600">Peso ({{ formattedWeight }} lbs × $7.00):</span>
+              <span class="font-medium">${{ formattedWeightCost }}</span>
+            </div>
+            <div class="flex justify-between mb-2">
+              <span class="text-gray-600">Subtotal:</span>
+              <span class="font-medium">${{ formattedSubtotal }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">IVA (13%):</span>
+              <span class="font-medium">${{ formattedIVA }}</span>
+            </div>
+          </div>
+          <div class="pt-4 border-t-2 border-navy">
+            <div class="flex justify-between items-center">
+              <span class="text-2xl font-bold text-navy">Total:</span>
+              <span class="text-3xl font-bold text-cyan">${{ formattedTotal }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

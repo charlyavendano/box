@@ -1,0 +1,79 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-4">Próximos Viajes</h1>
+      <p class="text-xl text-gray-600">Sigue el recorrido de tus encomiendas</p>
+    </div>
+
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8">
+      <!-- Dynamic Calendar Header -->
+      <div class="flex justify-between items-center mb-8">
+        <button (click)="previousMonth()" class="px-4 py-2 bg-navy text-white rounded-lg hover:bg-navy-dark transition-colors">&lt; Anterior</button>
+        <h2 class="text-3xl font-bold text-navy capitalize">{{ currentDate | date: 'MMMM yyyy' }}</h2>
+        <button (click)="nextMonth()" class="px-4 py-2 bg-navy text-white rounded-lg hover:bg-navy-dark transition-colors">Siguiente &gt;</button>
+      </div>
+
+      <!-- Day of the week headers -->
+      <div class="grid grid-cols-7 gap-2 mb-4">
+        <div class="text-center font-semibold text-gray-600 py-2">Dom</div>
+        <div class="text-center font-semibold text-gray-600 py-2">Lun</div>
+        <div class="text-center font-semibold text-gray-600 py-2">Mar</div>
+        <div class="text-center font-semibold text-gray-600 py-2">Mié</div>
+        <div class="text-center font-semibold text-gray-600 py-2">Jue</div>
+        <div class="text-center font-semibold text-gray-600 py-2">Vie</div>
+        <div class="text-center font-semibold text-gray-600 py-2">Sáb</div>
+      </div>
+
+      <!-- Dynamic Calendar Grid -->
+      <div class="grid grid-cols-7 gap-2">
+        @for (day of calendarDays; track day.date) {
+          <div 
+            class="aspect-square p-2 border border-gray-200 rounded-lg transition-all"
+            [class.hover:shadow-md]="day.isCurrentMonth"
+            [class.bg-cyan-light]="day.event?.bgColor === 'cyan'"
+            [class.bg-navy-light]="day.event?.bgColor === 'navy'"
+            [class.bg-white]="!day.event"
+            [class.text-gray-400]="!day.isCurrentMonth"
+            [class.font-semibold]="day.isCurrentMonth"
+          >
+            <div class="text-sm mb-1">{{ day.dayOfMonth }}</div>
+            @if (day.event) {
+              <div class="text-xs font-bold" [class.text-cyan]="day.event.textColor === 'cyan'" [class.text-navy]="day.event.textColor === 'navy'">
+                {{ day.event.label }}
+              </div>
+              @if (day.event.icon === 'flag-usa') {
+                <div class="text-xs mt-1">🇺🇸</div>
+              } @else if (day.event.icon === 'flag-sv') {
+                <div class="text-xs mt-1">🇸🇻</div>
+              } @else if (day.event.icon === 'plane-usa-sv') {
+                <div class="text-xs mt-1">✈️ 🇺🇸→🇸🇻</div>
+              } @else if (day.event.icon === 'plane-sv-usa') {
+                <div class="text-xs mt-1">✈️ 🇸🇻→🇺🇸</div>
+              }
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Legend (remains relevant for Feb 2024) -->
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-cyan-light p-4 rounded-lg">
+          <h3 class="font-semibold text-navy mb-2">Recogiendo (Feb 6-8)</h3>
+          <p class="text-sm text-gray-700">Recolección de encomiendas en Houston, Texas</p>
+        </div>
+        <div class="bg-white border-2 border-cyan p-4 rounded-lg">
+          <h3 class="font-semibold text-navy mb-2">Viajando USA→SV (Feb 9)</h3>
+          <p class="text-sm text-gray-700">En tránsito hacia San Miguel, El Salvador</p>
+        </div>
+        <div class="bg-navy-light p-4 rounded-lg">
+          <h3 class="font-semibold text-navy mb-2">Entregando (Feb 10-12)</h3>
+          <p class="text-sm text-gray-700">Entrega de encomiendas en San Miguel</p>
+        </div>
+        <div class="bg-white border-2 border-navy p-4 rounded-lg">
+          <h3 class="font-semibold text-navy mb-2">Viajando SV→USA (Feb 13)</h3>
+          <p class="text-sm text-gray-700">Regreso a Houston, Texas</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
