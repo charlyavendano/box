@@ -15,16 +15,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   images = [
     {
-      src: 'https://images.unsplash.com/photo-1601581875030-450994ce9566?w=1920&q=80',
-      alt: 'Logistics and delivery'
+      src: 'https://images.unsplash.com/photo-1570710891163-6d3b5c47248b?w=1920&q=80',
+      alt: 'Avión de carga internacional'
     },
     {
-      src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80',
-      alt: 'Delivery trucks'
+      src: 'https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=1920&q=80',
+      alt: 'Logística terrestre y transporte'
     },
     {
-      src: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1920&q=80',
-      alt: 'Happy customers receiving packages'
+      src: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80',
+      alt: 'Centro de distribución y almacenamiento'
     }
   ];
 

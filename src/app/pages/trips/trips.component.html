@@ -1,77 +1,149 @@
 <div class="min-h-screen bg-gray-50 py-12">
   <div class="container mx-auto px-4">
+    <!-- Header -->
     <div class="text-center mb-12">
-      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-4">Próximos Viajes</h1>
-      <p class="text-xl text-gray-600">Sigue el recorrido de tus encomiendas</p>
+      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-4">Itinerario de Vuelos</h1>
+      <p class="text-xl text-gray-600">Planifica tus envíos con nuestro calendario de salidas</p>
     </div>
 
-    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8">
-      <!-- Dynamic Calendar Header -->
-      <div class="flex justify-between items-center mb-8">
-        <button (click)="previousMonth()" class="px-4 py-2 bg-navy text-white rounded-lg hover:bg-navy-dark transition-colors">&lt; Anterior</button>
-        <h2 class="text-3xl font-bold text-navy capitalize">{{ currentDate | date: 'MMMM yyyy' }}</h2>
-        <button (click)="nextMonth()" class="px-4 py-2 bg-navy text-white rounded-lg hover:bg-navy-dark transition-colors">Siguiente &gt;</button>
+    <!-- Next Trip Hero Card -->
+    @if (nextTrip) {
+    <div class="max-w-5xl mx-auto mb-12 animate-fade-in">
+      <div
+        class="bg-gradient-to-r from-navy to-navy-dark rounded-2xl shadow-xl overflow-hidden text-white flex flex-col md:flex-row">
+        <div class="flex-grow p-8 md:p-10">
+          <div class="flex items-center space-x-3 mb-4">
+            <span class="bg-cyan px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Siguiente
+              Vuelo</span>
+            <span class="text-gray-400 font-medium text-sm">{{ nextTrip.fullDate | date: 'fullDate' }}</span>
+          </div>
+          <h2 class="text-4xl font-black mb-4">{{ nextTrip.label }}</h2>
+          <div class="flex flex-wrap gap-4 mb-8">
+            <div class="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-lg">
+              <svg class="w-5 h-5 text-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span class="font-bold">Cierre de bodega: 5:00 PM</span>
+            </div>
+            <div class="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-lg">
+              <svg class="w-5 h-5 text-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
+              </svg>
+              <span class="font-bold">Destino: San Miguel, SV</span>
+            </div>
+          </div>
+          <button routerLink="/cotizar"
+            class="bg-cyan hover:bg-cyan/90 text-white font-bold py-4 px-8 rounded-xl transition-all active:scale-95 shadow-lg">
+            Preparar mi envío para este vuelo
+          </button>
+        </div>
+        <div class="w-full md:w-1/3 bg-white/5 flex items-center justify-center p-8">
+          <div class="text-center">
+            <div class="text-6xl mb-4">✈️</div>
+            <p class="text-gray-400 text-sm italic">"Vuelo semanal directo Houston → SM"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Main View Switcher (Mobile Timeline vs Desktop Calendar) -->
+    <div class="max-w-5xl mx-auto">
+      <!-- Calendar Controls -->
+      <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <h3 class="text-2xl font-bold text-navy capitalize">{{ currentDate | date: 'MMMM yyyy' }}</h3>
+        <div class="flex space-x-2">
+          <button (click)="previousMonth()"
+            class="p-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 text-navy transition-colors">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button (click)="nextMonth()"
+            class="p-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 text-navy transition-colors">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
 
-      <!-- Day of the week headers -->
-      <div class="grid grid-cols-7 gap-2 mb-4">
-        <div class="text-center font-semibold text-gray-600 py-2">Dom</div>
-        <div class="text-center font-semibold text-gray-600 py-2">Lun</div>
-        <div class="text-center font-semibold text-gray-600 py-2">Mar</div>
-        <div class="text-center font-semibold text-gray-600 py-2">Mié</div>
-        <div class="text-center font-semibold text-gray-600 py-2">Jue</div>
-        <div class="text-center font-semibold text-gray-600 py-2">Vie</div>
-        <div class="text-center font-semibold text-gray-600 py-2">Sáb</div>
-      </div>
-
-      <!-- Dynamic Calendar Grid -->
-      <div class="grid grid-cols-7 gap-2">
-        @for (day of calendarDays; track day.date) {
-          <div 
-            class="aspect-square p-2 border border-gray-200 rounded-lg transition-all"
-            [class.hover:shadow-md]="day.isCurrentMonth"
-            [class.bg-cyan-light]="day.event?.bgColor === 'cyan'"
-            [class.bg-navy-light]="day.event?.bgColor === 'navy'"
-            [class.bg-white]="!day.event"
-            [class.text-gray-400]="!day.isCurrentMonth"
-            [class.font-semibold]="day.isCurrentMonth"
-          >
-            <div class="text-sm mb-1">{{ day.dayOfMonth }}</div>
+      <!-- Desktop Calendar Grid -->
+      <div class="hidden md:block bg-white rounded-2xl shadow-lg p-8">
+        <div class="grid grid-cols-7 gap-4 mb-4">
+          @for (day of ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']; track day) {
+          <div class="text-center font-bold text-gray-400 text-xs uppercase tracking-widest">{{ day }}</div>
+          }
+        </div>
+        <div class="grid grid-cols-7 gap-4">
+          @for (day of calendarDays; track day.date) {
+          <div class="aspect-square p-3 border-2 border-transparent rounded-2xl transition-all relative group"
+            [class.bg-gray-50]="!day.isCurrentMonth" [class.bg-white]="day.isCurrentMonth && !day.event"
+            [class.border-gray-100]="day.isCurrentMonth && !day.event"
+            [class.bg-cyan/10]="day.event?.bgColor === 'cyan'" [class.bg-navy/10]="day.event?.bgColor === 'navy'"
+            [class.ring-2]="day.event" [class.ring-cyan/20]="day.event?.bgColor === 'cyan'"
+            [class.ring-navy/20]="day.event?.bgColor === 'navy'">
+            <div class="text-sm font-black mb-1" [class.text-gray-300]="!day.isCurrentMonth"
+              [class.text-navy]="day.isCurrentMonth">{{ day.dayOfMonth }}</div>
             @if (day.event) {
-              <div class="text-xs font-bold" [class.text-cyan]="day.event.textColor === 'cyan'" [class.text-navy]="day.event.textColor === 'navy'">
-                {{ day.event.label }}
-              </div>
-              @if (day.event.icon === 'flag-usa') {
-                <div class="text-xs mt-1">🇺🇸</div>
-              } @else if (day.event.icon === 'flag-sv') {
-                <div class="text-xs mt-1">🇸🇻</div>
-              } @else if (day.event.icon === 'plane-usa-sv') {
-                <div class="text-xs mt-1">✈️ 🇺🇸→🇸🇻</div>
-              } @else if (day.event.icon === 'plane-sv-usa') {
-                <div class="text-xs mt-1">✈️ 🇸🇻→🇺🇸</div>
+            <div class="text-[10px] font-black uppercase leading-tight"
+              [class.text-cyan]="day.event.textColor === 'cyan'" [class.text-navy]="day.event.textColor === 'navy'">
+              {{ day.event.label }}
+            </div>
+            <!-- Dynamic Icon Badge -->
+            <div class="absolute bottom-3 right-3 opacity-20 group-hover:opacity-100 transition-opacity">
+              @if (day.event.icon.includes('plane')) {
+              <span class="text-xl">✈️</span>
+              } @else if (day.event.icon.includes('usa')) {
+              <span class="text-xl">🇺🇸</span>
+              } @else {
+              <span class="text-xl">🇸🇻</span>
               }
+            </div>
             }
           </div>
+          }
+        </div>
+      </div>
+
+      <!-- Mobile Timeline View -->
+      <div class="md:hidden space-y-4">
+        @for (day of calendarDays; track day.date) {
+        @if (day.isCurrentMonth && day.event) {
+        <div class="bg-white p-6 rounded-2xl shadow-md border-l-8" [class.border-cyan]="day.event.bgColor === 'cyan'"
+          [class.border-navy]="day.event.bgColor === 'navy'">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-xs font-bold text-gray-400 uppercase tracking-tighter mb-1">{{ day.date | date: 'EEEE, d
+                MMMM' }}</p>
+              <h4 class="text-xl font-black text-navy">{{ day.event.label }}</h4>
+            </div>
+            <div class="text-2xl">
+              @if (day.event.icon.includes('plane')) { ✈️ }
+              @else if (day.event.icon.includes('usa')) { 🇺🇸 }
+              @else { 🇸🇻 }
+            </div>
+          </div>
+        </div>
+        }
         }
       </div>
 
-      <!-- Legend (remains relevant for Feb 2024) -->
-      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-cyan-light p-4 rounded-lg">
-          <h3 class="font-semibold text-navy mb-2">Recogiendo (Feb 6-8)</h3>
-          <p class="text-sm text-gray-700">Recolección de encomiendas en Houston, Texas</p>
+      <!-- Legend (Compact) -->
+      <div class="mt-12 flex flex-wrap gap-6 justify-center">
+        <div class="flex items-center space-x-2">
+          <div class="w-4 h-4 rounded-full bg-cyan"></div>
+          <span class="text-sm font-bold text-navy">Trámites en USA</span>
         </div>
-        <div class="bg-white border-2 border-cyan p-4 rounded-lg">
-          <h3 class="font-semibold text-navy mb-2">Viajando USA→SV (Feb 9)</h3>
-          <p class="text-sm text-gray-700">En tránsito hacia San Miguel, El Salvador</p>
+        <div class="flex items-center space-x-2">
+          <div class="w-4 h-4 rounded-full bg-navy"></div>
+          <span class="text-sm font-bold text-navy">Entregas en SV</span>
         </div>
-        <div class="bg-navy-light p-4 rounded-lg">
-          <h3 class="font-semibold text-navy mb-2">Entregando (Feb 10-12)</h3>
-          <p class="text-sm text-gray-700">Entrega de encomiendas en San Miguel</p>
-        </div>
-        <div class="bg-white border-2 border-navy p-4 rounded-lg">
-          <h3 class="font-semibold text-navy mb-2">Viajando SV→USA (Feb 13)</h3>
-          <p class="text-sm text-gray-700">Regreso a Houston, Texas</p>
+        <div class="flex items-center space-x-2">
+          <span class="text-sm">✈️</span>
+          <span class="text-sm font-bold text-navy">Vuelos Internacionales</span>
         </div>
       </div>
     </div>

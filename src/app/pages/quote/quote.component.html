@@ -1,114 +1,160 @@
 <div class="min-h-screen bg-gray-50 py-12">
   <div class="container mx-auto px-4">
     <div class="text-center mb-12">
-      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-4">Cotizaciones</h1>
-      <p class="text-xl text-gray-600">Calcula el costo de tu encomienda</p>
+      <h1 class="text-4xl md:text-5xl font-bold text-navy mb-4">Cotizador Profesional</h1>
+      <p class="text-xl text-gray-600">Calcula el costo transparente de tu encomienda</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
       <!-- Form Section -->
-      <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+      <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
         <h2 class="text-2xl font-bold text-navy mb-6 flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-cyan">
-            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
-            <line x1="8" y1="6" x2="16" y2="6"></line>
-            <line x1="8" y1="10" x2="16" y2="10"></line>
-            <line x1="8" y1="14" x2="16" y2="14"></line>
-            <line x1="8" y1="18" x2="16" y2="18"></line>
+          <svg class="w-6 h-6 mr-3 text-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
           </svg>
-          Información del Paquete
+          Detalles del Paquete
         </h2>
+
         <form [formGroup]="quoteForm" class="space-y-6">
           <!-- Category -->
-          <div>
-            <label class="block text-gray-700 font-medium mb-2">Categoría</label>
-            <select 
-              formControlName="category"
-              (change)="updateCalculations()"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan focus:border-transparent"
-            >
-              <option value="0">Ropa</option>
-              <option value="0">Electrónicos</option>
-              <option value="0">Zapatos</option>
-              <option value="0">Juguetes</option>
-              <option value="0">Varios</option>
-            </select>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="col-span-1 md:col-span-2">
+              <label class="block text-gray-700 font-bold mb-2">Categoría del Producto</label>
+              <select formControlName="category" (change)="updateCalculations()"
+                class="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-cyan focus:ring-0 transition-all font-medium text-navy">
+                @for (cat of categories; track cat.id) {
+                <option [value]="cat.id">{{ cat.name }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Value & Actual Weight -->
+            <div>
+              <label class="block text-gray-700 font-bold mb-2">Valor Comercial ($)</label>
+              <input type="number" formControlName="value" (input)="updateCalculations()"
+                class="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-cyan focus:ring-0 transition-all"
+                placeholder="0.00" />
+            </div>
+            <div>
+              <label class="block text-gray-700 font-bold mb-2">Peso Real (Lbs)</label>
+              <input type="number" formControlName="weight" (input)="updateCalculations()"
+                class="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-cyan focus:ring-0 transition-all"
+                placeholder="0.0" />
+            </div>
           </div>
 
-          <!-- Package Value -->
-          <div>
-            <label class="block text-gray-700 font-medium mb-2 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-cyan">
-                <line x1="12" y1="1" x2="12" y2="23"></line>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-              </svg>
-              Valor del Paquete ($)
-            </label>
-            <input 
-              type="number" 
-              formControlName="value"
-              (input)="updateCalculations()"
-              min="0"
-              step="0.01"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan focus:border-transparent"
-              placeholder="0.00"
-            />
-          </div>
-
-          <!-- Weight -->
-          <div>
-            <label class="block text-gray-700 font-medium mb-2 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-cyan">
-                <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-              </svg>
-              Peso (Libras)
-            </label>
-            <input 
-              type="number" 
-              formControlName="weight"
-              (input)="updateCalculations()"
-              min="0"
-              step="0.1"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan focus:border-transparent"
-              placeholder="0.0"
-            />
+          <!-- Dimensions Section -->
+          <div class="pt-6 border-t border-gray-100">
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Dimensiones (Pulgadas para Peso
+              Volumétrico)</h3>
+            <div class="grid grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-500 mb-1">Largo</label>
+                <input type="number" formControlName="length" (input)="updateCalculations()"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-cyan outline-none"
+                  placeholder="0" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-500 mb-1">Ancho</label>
+                <input type="number" formControlName="width" (input)="updateCalculations()"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-cyan outline-none"
+                  placeholder="0" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-500 mb-1">Alto</label>
+                <input type="number" formControlName="height" (input)="updateCalculations()"
+                  class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:border-cyan outline-none"
+                  placeholder="0" />
+              </div>
+            </div>
+            <p class="mt-3 text-xs text-gray-500 italic">
+              * El costo se calcula basándose en el peso que sea mayor entre el real y el volumétrico.
+            </p>
           </div>
         </form>
       </div>
 
-      <!-- Invoice Preview -->
-      <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
-        <h2 class="text-2xl font-bold text-navy mb-6">Resumen de Cotización</h2>
-        <div class="space-y-4">
-          <div class="border-b border-gray-200 pb-4">
-            <div class="flex justify-between mb-2">
-              <span class="text-gray-600">Valor del Paquete:</span>
-              <span class="font-medium">${{ formattedValue }}</span>
+      <!-- Result Section -->
+      <div class="space-y-6">
+        <div class="bg-navy rounded-xl shadow-lg p-6 md:p-8 text-white relative overflow-hidden">
+          <div class="absolute top-0 right-0 p-4 opacity-10">
+            <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+            </svg>
+          </div>
+
+          <h2 class="text-2xl font-bold mb-6">Resumen de Totales</h2>
+
+          <div class="space-y-4 relative z-10">
+            <div class="flex justify-between items-center text-gray-300">
+              <span>Peso a cobrar:</span>
+              <span class="text-xl font-bold text-white">{{ formattedUsedWeight }} lbs</span>
             </div>
-            <div class="flex justify-between mb-2">
-              <span class="text-gray-600">Categoría (0%):</span>
-              <span class="font-medium">$0.00</span>
+
+            <div class="grid grid-cols-2 gap-4 pb-4 border-b border-white/10">
+              <div class="bg-white/5 rounded-lg p-3" [class.border-2]="!isVolumetricHigher"
+                [class.border-cyan]="!isVolumetricHigher">
+                <p class="text-[10px] uppercase font-bold text-gray-400">Peso Real</p>
+                <p class="text-lg font-bold">{{ formattedWeight }} lbs</p>
+              </div>
+              <div class="bg-white/5 rounded-lg p-3" [class.border-2]="isVolumetricHigher"
+                [class.border-cyan]="isVolumetricHigher">
+                <p class="text-[10px] uppercase font-bold text-gray-400">Peso Volumétrico</p>
+                <p class="text-lg font-bold">{{ formattedVolumetricWeight }} lbs</p>
+              </div>
             </div>
-            <div class="flex justify-between mb-2">
-              <span class="text-gray-600">Peso ({{ formattedWeight }} lbs × $7.00):</span>
-              <span class="font-medium">${{ formattedWeightCost }}</span>
+
+            <div class="space-y-3 pt-2">
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-400">Flete (Peso × $7.00)</span>
+                <span class="font-bold">${{ formattedWeightCost }}</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-400">Impuestos de Aduana</span>
+                <span class="font-bold">${{ formattedCategoryTax }}</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-400">IVA (13%)</span>
+                <span class="font-bold">${{ formattedIVA }}</span>
+              </div>
             </div>
-            <div class="flex justify-between mb-2">
-              <span class="text-gray-600">Subtotal:</span>
-              <span class="font-medium">${{ formattedSubtotal }}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-600">IVA (13%):</span>
-              <span class="font-medium">${{ formattedIVA }}</span>
+
+            <div class="pt-6 border-t-2 border-white/20 mt-6 mt-6">
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-gray-400 text-sm">Total Estimado</p>
+                  <p class="text-4xl font-black text-cyan">${{ formattedTotal }}</p>
+                </div>
+                <button (click)="shareOnWhatsApp()"
+                  class="bg-green-500 hover:bg-green-600 text-white p-3 rounded-full transition-all active:scale-90 shadow-lg"
+                  title="Compartir por WhatsApp">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.633 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
-          <div class="pt-4 border-t-2 border-navy">
-            <div class="flex justify-between items-center">
-              <span class="text-2xl font-bold text-navy">Total:</span>
-              <span class="text-3xl font-bold text-cyan">${{ formattedTotal }}</span>
+        </div>
+
+        <!-- Help Card -->
+        <div class="bg-cyan/10 border-2 border-cyan/20 rounded-xl p-6">
+          <div class="flex items-start">
+            <div class="bg-cyan p-2 rounded-lg text-white mr-4 mt-1">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-navy mb-1">¿Necesitas ayuda con el peso?</h4>
+              <p class="text-sm text-gray-600">
+                Si no conoces las dimensiones exactas, puedes usar solo el peso real. Sin embargo, para paquetes
+                voluminosos (como almohadas o sillas), el peso volumétrico suele ser mayor.
+              </p>
             </div>
           </div>
         </div>

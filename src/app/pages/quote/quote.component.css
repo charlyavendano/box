@@ -1,1 +1,30 @@
-/* Quote Component Styles */
+/* Animation for higher weight indicator */
+@keyframes pulse-border {
+    0% {
+        border-color: rgba(6, 182, 212, 0.4);
+    }
+
+    50% {
+        border-color: rgba(6, 182, 212, 1);
+    }
+
+    100% {
+        border-color: rgba(6, 182, 212, 0.4);
+    }
+}
+
+.border-cyan {
+    animation: pulse-border 2s infinite;
+}
+
+/* Chrome, Safari, Edge, Opera - Remove arrows from number input */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox - Remove arrows from number input */
+input[type=number] {
+    -moz-appearance: textfield;
+}
