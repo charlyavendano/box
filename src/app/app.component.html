@@ -1,7 +1,13 @@
 <div class="min-h-screen flex flex-col">
+  @if (showPublicElements) {
   <app-navigation></app-navigation>
+  }
+
   <main class="flex-grow">
     <router-outlet></router-outlet>
   </main>
+
+  @if (showPublicElements) {
   <app-footer></app-footer>
+  }
 </div>

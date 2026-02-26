@@ -1,0 +1,63 @@
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+        <div class="text-center mb-10">
+            <div class="flex justify-center mb-6">
+                <img src="/assets/logo.png" alt="Box Express" class="h-16 w-auto">
+            </div>
+            <h2 class="text-3xl font-black text-navy mb-2">Bienvenido de nuevo</h2>
+            <p class="text-gray-500">Ingresa a tu casillero para gestionar tus envíos.</p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <div>
+                <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Correo
+                    Electrónico</label>
+                <div class="relative">
+                    <input type="email" formControlName="email"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan focus:bg-white outline-none transition-all pl-12"
+                        placeholder="tu@correo.com" />
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">📧</span>
+                </div>
+                @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+                <p class="text-red-500 text-xs mt-1 font-bold">Por favor ingresa un correo válido</p>
+                }
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <label class="block text-xs font-black text-gray-400 uppercase tracking-widest">Contraseña</label>
+                    <a href="#" class="text-xs font-bold text-cyan hover:underline">¿Olvidaste tu contraseña?</a>
+                </div>
+                <div class="relative">
+                    <input type="password" formControlName="password"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan focus:bg-white outline-none transition-all pl-12"
+                        placeholder="••••••••" />
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">🔒</span>
+                </div>
+                @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                <p class="text-red-500 text-xs mt-1 font-bold">La contraseña es requerida</p>
+                }
+            </div>
+
+            <div class="flex items-center justify-between">
+                <label class="flex items-center cursor-pointer group">
+                    <input type="checkbox" formControlName="rememberMe"
+                        class="w-4 h-4 text-cyan border-gray-300 rounded focus:ring-cyan">
+                    <span class="ml-2 text-sm text-gray-500 group-hover:text-navy transition-colors">Recordarme</span>
+                </label>
+            </div>
+
+            <button type="submit" [disabled]="loginForm.invalid"
+                class="w-full bg-navy text-white text-lg font-bold py-4 rounded-xl hover:bg-navy/90 transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                Iniciar Sesión
+            </button>
+        </form>
+
+        <div class="mt-8 text-center pt-8 border-t border-gray-100">
+            <p class="text-gray-500 text-sm">
+                ¿Aún no tienes un casillero?
+                <a routerLink="/registro" class="text-cyan font-bold hover:underline">Regístrate gratis aquí</a>
+            </p>
+        </div>
+    </div>
+</div>

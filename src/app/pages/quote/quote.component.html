@@ -1,9 +1,11 @@
-<div class="min-h-screen bg-gray-50 py-12">
-  <div class="container mx-auto px-4">
+<div [class.py-12]="!inDashboard" [class.bg-gray-50]="!inDashboard">
+  <div [class.container]="!inDashboard" class="mx-auto px-4">
+    @if (!inDashboard) {
     <div class="text-center mb-12">
       <h1 class="text-4xl md:text-5xl font-bold text-navy mb-4">Cotizador Profesional</h1>
       <p class="text-xl text-gray-600">Calcula el costo transparente de tu encomienda</p>
     </div>
+    }
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
       <!-- Form Section -->

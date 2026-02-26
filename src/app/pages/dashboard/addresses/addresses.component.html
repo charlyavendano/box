@@ -1,0 +1,45 @@
+<div class="space-y-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-3xl font-black text-navy mb-2">Mis Direcciones</h2>
+            <p class="text-gray-500">Gestiona tus puntos de entrega y recepción.</p>
+        </div>
+        <button
+            class="bg-navy text-white px-6 py-3 rounded-xl font-bold hover:bg-navy/90 transition-all active:scale-95 shadow-lg flex items-center justify-center">
+            <span class="mr-2">➕</span> Nueva Dirección
+        </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        @for (address of addresses; track address.id) {
+        <div
+            class="bg-white rounded-3xl shadow-sm border p-6 hover:shadow-xl transition-all relative group overflow-hidden">
+            <!-- Country Badge -->
+            <div class="absolute top-0 right-0 px-4 py-1 rounded-bl-2xl text-[10px] font-black uppercase tracking-widest text-white"
+                [class.bg-cyan]="address.country === 'USA'" [class.bg-navy]="address.country === 'SV'">
+                {{ address.country }}
+            </div>
+
+            <div class="mb-6">
+                <span class="text-2xl mb-2 block">{{ address.country === 'USA' ? '🇺🇸' : '🇸🇻' }}</span>
+                <h3 class="font-bold text-navy text-lg">{{ address.label }}</h3>
+                @if (address.isDefault) {
+                <span class="text-[10px] text-cyan font-bold uppercase tracking-widest">Predeterminada</span>
+                }
+            </div>
+
+            <div class="space-y-1 text-gray-500 text-sm mb-6">
+                <p>{{ address.line1 }}</p>
+                <p>{{ address.city }}, {{ address.state }} {{ address.zip }}</p>
+            </div>
+
+            <div class="flex items-center space-x-3 pt-4 border-t">
+                <button
+                    class="flex-1 py-2 text-xs font-bold text-navy bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">Editar</button>
+                <button
+                    class="flex-1 py-2 text-xs font-bold text-red-500 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">Eliminar</button>
+            </div>
+        </div>
+        }
+    </div>
+</div>

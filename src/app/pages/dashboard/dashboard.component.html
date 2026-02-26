@@ -1,0 +1,77 @@
+<div class="flex h-screen bg-gray-100 overflow-hidden">
+    <!-- Sidebar Mobile Backdrop -->
+    <div *ngIf="isSidebarOpen" (click)="isSidebarOpen = false"
+        class="fixed inset-0 z-20 bg-black bg-opacity-50 transition-opacity lg:hidden">
+    </div>
+
+    <!-- Sidebar -->
+    <aside [class.translate-x-0]="isSidebarOpen" [class.-translate-x-full]="!isSidebarOpen"
+        class="fixed inset-y-0 left-0 z-30 w-64 bg-navy text-white transition duration-300 transform lg:translate-x-0 lg:static lg:inset-0">
+        <div class="flex items-center justify-center h-20 bg-navy-dark px-6">
+            <a routerLink="/" class="flex items-center space-x-3">
+                <img src="/assets/logo.png" alt="Box Express" class="h-10 w-auto brightness-0 invert">
+            </a>
+        </div>
+
+        <nav class="mt-8 px-4 space-y-2">
+            <a *ngFor="let item of menuItems" [routerLink]="item.path"
+                routerLinkActive="bg-cyan text-white shadow-lg scale-105"
+                [routerLinkActiveOptions]="{exact: item.exact}"
+                class="flex items-center px-4 py-3 text-gray-300 transition-all rounded-xl hover:bg-white/10 hover:text-white group">
+                <span class="text-xl mr-3 group-hover:scale-110 transition-transform">{{ item.icon }}</span>
+                <span class="font-medium">{{ item.label }}</span>
+            </a>
+        </nav>
+
+        <div class="absolute bottom-0 w-full p-4 border-t border-white/10 space-y-4">
+            <!-- Mini Profile -->
+            <div class="px-4 py-3 bg-white/5 rounded-2xl flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-cyan/20 text-cyan flex items-center justify-center font-bold">
+                    CA
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-xs font-bold truncate">Carlos Avendaño</p>
+                    <p class="text-[10px] text-cyan font-black mb-0.5">BXS-994433</p>
+                    <div class="flex items-center">
+                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
+                        <span class="text-[10px] text-gray-400 font-medium">Casillero Activo</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logout Button -->
+            <button (click)="logout()"
+                class="flex items-center w-full px-4 py-3 text-gray-400 transition-all rounded-xl hover:bg-red-500/10 hover:text-red-400 group">
+                <span class="text-xl mr-3 group-hover:scale-110 transition-transform">🚪</span>
+                <span class="font-medium">Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="flex items-center justify-between px-6 py-4 bg-white border-b shadow-sm">
+            <div class="flex items-center">
+                <button (click)="isSidebarOpen = true" class="text-gray-500 lg:hidden focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <h1 class="ml-4 text-xl font-bold text-navy truncate md:text-2xl">Mi Casillero</h1>
+            </div>
+
+            <div class="flex items-center">
+                <img src="/assets/logo.png" alt="Box Express" class="h-10 w-auto">
+            </div>
+        </header>
+
+        <!-- Dynamic Content -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
+            <div class="max-w-7xl mx-auto animate-fade-in">
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+    </div>
+</div>

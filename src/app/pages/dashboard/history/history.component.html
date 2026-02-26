@@ -1,0 +1,162 @@
+<div class="space-y-8">
+    <div>
+        <h2 class="text-3xl font-black text-navy mb-2">Mis Envios</h2>
+        <p class="text-gray-500">Historial completo de tus paquetes recibidos y enviados.</p>
+    </div>
+
+    <!-- Shipments Table -->
+    <div class="bg-white rounded-3xl shadow-sm border overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-50/50 border-b">
+                        <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-gray-400">Paquete</th>
+                        <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-gray-400">Tracking #</th>
+                        <th class="px-6 py-5 text-xs font-black uppercase tracking-widest text-gray-400">Fecha</th>
+                        <th class="px-6 py-5 text-xs font-black uppercase tracking-widest text-gray-400">Estado</th>
+                        <th class="px-6 py-5 text-xs font-black uppercase tracking-widest text-gray-400">Peso</th>
+                        <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-gray-400 text-right">
+                            Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y">
+                    @for (shipment of shipments; track shipment.id) {
+                    <tr class="hover:bg-gray-50/50 transition-colors group">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-xl">
+                                    📦</div>
+                                <span class="font-bold text-navy">{{ shipment.description }}</span>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <span class="font-mono text-sm font-bold text-cyan">{{ shipment.trackingNumber }}</span>
+                        </td>
+                        <td class="px-6 py-6 text-sm text-gray-500">
+                            {{ shipment.date }}
+                        </td>
+                        <td class="px-6 py-6">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest"
+                                [ngClass]="getStatusClass(shipment.status)">
+                                {{ shipment.status }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-6 text-sm font-bold text-navy">
+                            {{ shipment.weight }} Lbs
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <button (click)="viewDetail(shipment)"
+                                class="bg-white border text-navy font-bold text-xs px-4 py-2 rounded-lg hover:bg-navy hover:text-white transition-all">
+                                Ver Detalle
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div *ngIf="selectedShipment"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden animate-slide-up">
+            <!-- Modal Header -->
+            <div class="bg-navy p-6 text-white flex justify-between items-center">
+                <div>
+                    <p class="text-cyan text-xs font-black uppercase tracking-widest mb-1">Detalle del Envío</p>
+                    <h3 class="text-2xl font-bold">{{ selectedShipment.trackingNumber }}</h3>
+                </div>
+                <button (click)="closeDetail()" class="p-2 hover:bg-white/10 rounded-full transition-colors">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="p-8 space-y-8 max-h-[70vh] overflow-y-auto">
+                <!-- Status & Summary -->
+                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                    <div class="flex items-center space-x-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-2xl shadow-sm border">
+                            📦</div>
+                        <div>
+                            <p class="text-sm font-bold text-navy">{{ selectedShipment.description }}</p>
+                            <p class="text-xs text-gray-400">{{ selectedShipment.weight }} Lbs</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest"
+                        [ngClass]="getStatusClass(selectedShipment.status)">
+                        {{ selectedShipment.status }}
+                    </span>
+                </div>
+
+                <!-- Shipping Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Remitente</p>
+                        <p class="text-sm font-bold text-navy">{{ selectedShipment.sender }}</p>
+                        <p class="text-xs text-gray-500">{{ selectedShipment.origin }}</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Destinatario</p>
+                        <p class="text-sm font-bold text-navy">{{ selectedShipment.receiver }}</p>
+                        <p class="text-xs text-gray-500">{{ selectedShipment.destination }}</p>
+                    </div>
+                </div>
+
+                <!-- Items List -->
+                <div>
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Contenido del Paquete
+                    </p>
+                    <div class="space-y-3">
+                        @for (item of selectedShipment.items; track item.description) {
+                        <div
+                            class="flex justify-between items-center text-sm py-2 border-b border-gray-100 last:border-0">
+                            <span class="text-gray-600">{{ item.description }}</span>
+                            <span class="font-bold text-navy">x{{ item.quantity }}</span>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Tracking History -->
+                <div>
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">Historial de
+                        Movimientos</p>
+                    <div class="space-y-6">
+                        @for (step of selectedShipment.history; track step.date; let first = $first; let last = $last) {
+                        <div class="relative flex items-start space-x-4">
+                            @if (!last) {
+                            <div class="absolute left-2.5 top-5 w-0.5 h-full bg-gray-100"></div>
+                            }
+                            <div class="w-5 h-5 rounded-full z-10 border-2" [class.bg-cyan]="first"
+                                [class.border-cyan]="first" [class.bg-white]="!first" [class.border-gray-300]="!first"
+                                [class.animate-pulse]="first">
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <p class="text-xs font-bold" [class.text-cyan]="first" [class.text-navy]="!first">{{
+                                        step.status }}</p>
+                                    <p class="text-[10px] text-gray-400">{{ step.date }}</p>
+                                </div>
+                                <p class="text-[11px] text-gray-500">{{ step.location }}</p>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-6 bg-gray-50 border-t flex justify-end">
+                <button (click)="closeDetail()"
+                    class="bg-navy text-white px-8 py-3 rounded-xl font-bold hover:bg-navy/90 transition-all shadow-lg active:scale-95">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

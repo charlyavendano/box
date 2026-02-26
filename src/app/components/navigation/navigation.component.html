@@ -34,6 +34,10 @@
           class="hover:text-cyan transition-colors duration-200 font-medium text-navy">
           Registro
         </a>
+        <a routerLink="/login" routerLinkActive="text-cyan"
+          class="bg-navy text-white px-5 py-2 rounded-xl hover:bg-navy/90 transition-all font-bold text-sm">
+          Inicia Sesión
+        </a>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -81,6 +85,10 @@
       <a routerLink="/registro" (click)="closeMenu()"
         class="block px-4 py-2 hover:bg-navy-light hover:text-navy rounded transition-colors text-navy">
         Registro
+      </a>
+      <a routerLink="/login" (click)="closeMenu()"
+        class="block px-4 py-2 bg-navy text-white rounded-xl mx-4 text-center font-bold">
+        Inicia Sesión
       </a>
     </div>
     }
